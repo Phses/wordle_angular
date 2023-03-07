@@ -15,6 +15,7 @@ export class BaseService {
     Campo: 1,
     Letra: ''
   }
+  PalavraSecreta: string = ""
   Tentativa: number = 1
   Campo: number = 1
   Palavra: string[] = []
