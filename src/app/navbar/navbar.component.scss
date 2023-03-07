@@ -1,0 +1,11 @@
+@import '../../colors.scss';
+
+.nav-bar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 5px 70px;
+  background-color: $backgroundBase;
+  border-bottom: solid 1px $edgesColor;
+}
