@@ -5,6 +5,12 @@ type Chute = {
   Campo: number,
   Letra: string
 }
+
+export enum statusLetra {
+  PosicaoCerta,
+  PosicaoErrada,
+  NaoExiste
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -15,12 +21,14 @@ export class BaseService {
     Campo: 1,
     Letra: ''
   }
+  Verificacao: statusLetra[] = []
   PalavraSecreta: string = ""
   Tentativa: number = 1
   Campo: number = 1
   Palavra: string[] = []
   LetraDigitada = new EventEmitter<Chute>()
   LetraApagada = new EventEmitter<Chute>()
+  VerificaChute = new EventEmitter<Array<statusLetra>>()
   constructor() { }
 
   addLetraChute(letra: string) {
@@ -35,5 +43,20 @@ export class BaseService {
     this.Palavra.pop()
     this.chute.Campo --;
     this.LetraApagada.emit(this.chute)
+  }
+  verificaLetrasDoChute() {
+    this.Palavra.forEach((letraChute, index) => {
+      if(letraChute.toLowerCase() === this.PalavraSecreta[index]) {
+        this.Verificacao.push(statusLetra.PosicaoCerta)
+      } else if(this.PalavraSecreta.indexOf(letraChute.toLowerCase()) !== -1) {
+        console.log(letraChute)
+        console.log(this.PalavraSecreta.indexOf(letraChute.toLowerCase()))
+        this.Verificacao.push(statusLetra.PosicaoErrada)
+      } else {
+        this.Verificacao.push(statusLetra.NaoExiste)
+      }
+    });
+    this.VerificaChute.emit(this.Verificacao);
+    this.Tentativa ++;
   }
 }

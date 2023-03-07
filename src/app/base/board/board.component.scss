@@ -22,3 +22,15 @@
   color: white;
   font-size: 26px;
 }
+
+.posicaoCerta {
+  background-color: $backgorundLetterRightPosition;
+}
+
+.posicaoErrada {
+  background-color: $backgorundLetterRight;
+}
+
+.naoExiste {
+  background-color: $backgorundLetterWrong;
+}

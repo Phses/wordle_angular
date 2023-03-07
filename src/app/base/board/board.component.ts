@@ -1,5 +1,5 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { BaseService } from '../base.service';
+import { BaseService, statusLetra } from '../base.service';
 
 @Component({
   selector: 'app-board',
@@ -17,6 +17,22 @@ export class BoardComponent {
     this.baseService.LetraApagada.subscribe((chute) => {
       const campo = this.elementRef.nativeElement.querySelector(`.tentativa-${chute.Tentativa} .campo-${chute.Campo}`);
       this.renderer.setProperty(campo, 'textContent', "");
+    })
+    this.baseService.VerificaChute.subscribe((verificacao) => {
+      for(let i = 0; i <= 6; i++) {
+        const campo = this.elementRef.nativeElement.querySelector(`.tentativa-${this.baseService.Tentativa} .campo-${i + 1}`)
+        switch(verificacao[i]) {
+          case statusLetra.PosicaoCerta:
+            this.renderer.addClass(campo, 'posicaoCerta');
+            break;
+          case statusLetra.PosicaoErrada:
+            this.renderer.addClass(campo, 'posicaoErrada');
+            break;
+          case statusLetra.NaoExiste:
+            this.renderer.addClass(campo, 'naoExiste');
+            break;
+        }
+      }
     })
   }
 }

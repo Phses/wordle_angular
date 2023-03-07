@@ -17,4 +17,7 @@ export class TecladoComponent {
   apagarLetra(): void {
     this.baseService.removeLetraChute()
   }
+  verificaChute(): void {
+    this.baseService.verificaLetrasDoChute()
+  }
 }
