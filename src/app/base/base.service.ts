@@ -1,62 +1,63 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { statusLetra } from '../enums';
+import { Chute } from '../types';
 
-type Chute = {
-  Tentativa: number,
-  Campo: number,
-  Letra: string
-}
-
-export enum statusLetra {
-  PosicaoCerta,
-  PosicaoErrada,
-  NaoExiste
-}
 @Injectable({
   providedIn: 'root'
 })
 export class BaseService {
-  Palavras: string[] = ["falso", "bacia", "wordle"]
+  palavras: string[] = ["falso", "bacia", "wordle"]
   chute: Chute = {
-    Tentativa: 1,
-    Campo: 1,
-    Letra: ''
+    tentativaAtual: 1,
+    campoAtual: 1,
+    letra: ''
   }
-  Verificacao: statusLetra[] = []
-  PalavraSecreta: string = ""
-  Tentativa: number = 1
-  Campo: number = 1
-  Palavra: string[] = []
-  LetraDigitada = new EventEmitter<Chute>()
-  LetraApagada = new EventEmitter<Chute>()
-  VerificaChute = new EventEmitter<Array<statusLetra>>()
+  numeDeLetrasPalavraSecreta: number = 5
+  verificacaoDasLetras: statusLetra[] = []
+  palavraSecreta: string = ""
+  numeroDeTentativas: number = 6
+  palavraChute: string[] = []
+  letraDigitada = new EventEmitter<Chute>()
+  letraApagada = new EventEmitter<Chute>()
+  verificaPalavraChute = new EventEmitter<Array<statusLetra>>()
+
   constructor() { }
 
   addLetraChute(letra: string) {
-    if(this.Palavra.length < 5) {
-      this.Palavra.push(letra)
-      this.chute.Letra = letra
-      this.LetraDigitada.emit(this.chute)
-      this.chute.Campo ++
+    if(this.palavraChute.length < this.numeDeLetrasPalavraSecreta) {
+      this.palavraChute.push(letra)
+      this.chute.letra = letra
+      this.letraDigitada.emit(this.chute)
+      this.chute.campoAtual ++
     }
   }
   removeLetraChute() {
-    this.Palavra.pop()
-    this.chute.Campo --;
-    this.LetraApagada.emit(this.chute)
+    this.palavraChute.pop()
+    this.chute.campoAtual --;
+    this.letraApagada.emit(this.chute)
   }
   verificaLetrasDoChute() {
-    this.Palavra.forEach((letraChute, index) => {
-      if(letraChute.toLowerCase() === this.PalavraSecreta[index]) {
-        this.Verificacao.push(statusLetra.PosicaoCerta)
-      } else if(this.PalavraSecreta.indexOf(letraChute.toLowerCase()) !== -1) {
-        console.log(letraChute)
-        console.log(this.PalavraSecreta.indexOf(letraChute.toLowerCase()))
-        this.Verificacao.push(statusLetra.PosicaoErrada)
-      } else {
-        this.Verificacao.push(statusLetra.NaoExiste)
-      }
-    });
-    this.VerificaChute.emit(this.Verificacao);
-    this.Tentativa ++;
+    if(this.palavraChute.length === this.numeDeLetrasPalavraSecreta) {
+      this.palavraChute.forEach((letraChute, index) => {
+        if(letraChute.toLowerCase() === this.palavraSecreta[index]) {
+          this.verificacaoDasLetras.push(statusLetra.PosicaoCerta)
+        } else if(this.palavraSecreta.indexOf(letraChute.toLowerCase()) !== -1) {
+          console.log(letraChute)
+          console.log(this.palavraSecreta.indexOf(letraChute.toLowerCase()))
+          this.verificacaoDasLetras.push(statusLetra.PosicaoErrada)
+        } else {
+          this.verificacaoDasLetras.push(statusLetra.NaoExiste)
+        }
+      });
+    }
+    this.verificaPalavraChute.emit(this.verificacaoDasLetras);
+    this.chute.tentativaAtual ++;
+    this.chute.campoAtual = 1;
+    while(this.palavraChute.length) {
+      this.palavraChute.pop();
+    }
+    while(this.verificacaoDasLetras.length) {
+      this.verificacaoDasLetras.pop();
+    }
   }
 }

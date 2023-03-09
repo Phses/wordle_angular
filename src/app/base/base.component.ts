@@ -10,9 +10,9 @@ export class BaseComponent {
   constructor(private baseService: BaseService) {}
 
   ngOnInit() {
-    const random = Math.floor(Math.random() * this.baseService.Palavras.length);
+    const random = Math.floor(Math.random() * this.baseService.palavras.length);
     console.log(random)
-    this.baseService.PalavraSecreta = this.baseService.Palavras[random]
-    console.log(this.baseService.PalavraSecreta)
+    this.baseService.palavraSecreta = this.baseService.palavras[random]
+    console.log(this.baseService.palavraSecreta)
   }
 }
