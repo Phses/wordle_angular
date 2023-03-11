@@ -8,7 +8,8 @@ import { BaseService } from './base.service';
 })
 export class BaseComponent {
   constructor(private baseService: BaseService) {}
-
+  mostrarAviso: boolean = true
+  mensagemAviso: string = 'teste'
   ngOnInit() {
     const random = Math.floor(Math.random() * this.baseService.palavras.length);
     console.log(random)

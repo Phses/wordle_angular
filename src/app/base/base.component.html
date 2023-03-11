@@ -1,4 +1,7 @@
 <main>
+  <div *ngIf="mostrarAviso">
+    <app-aviso [mensagem]="mensagemAviso"></app-aviso>
+  </div>
   <app-board></app-board>
   <app-teclado></app-teclado>
 </main>
