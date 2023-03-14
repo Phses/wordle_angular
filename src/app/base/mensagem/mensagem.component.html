@@ -1,0 +1,5 @@
+<p class="mensagem" [ngClass]="{
+  'erro': tipoMensagem === 'Erro',
+  'sucesso': tipoMensagem === 'Sucesso',
+  'aviso': tipoMensagem === 'Aviso'
+}">{{ mensagem }}</p>

@@ -1,0 +1,23 @@
+@import '../../../colors.scss';
+
+.mensagem {
+  margin-top: 40px;
+  padding: 8px 10px;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+.erro {
+  background-color: $backgroundMessageError;
+  color: $letterMessageColorError;
+}
+
+.aviso {
+  background-color: $backgroundMessageAviso;
+  color: $letterMessageColorAviso;
+}
+
+.sucesso {
+  background-color: $backgroundMessageSuccess;
+  color: $letterMessageColorSuccess;
+}

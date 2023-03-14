@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { statusLetra } from '../enums';
-import { Chute } from '../types';
+import { statusLetra, tipoMensagem } from '../enums';
+import { Chute, Mensagem } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,7 @@ export class BaseService {
   letraDigitada = new EventEmitter<Chute>()
   letraApagada = new EventEmitter<Chute>()
   verificaPalavraChute = new EventEmitter<Array<statusLetra>>()
+  emiteMensagem = new EventEmitter<Mensagem>()
 
   constructor() { }
 
@@ -49,15 +50,55 @@ export class BaseService {
           this.verificacaoDasLetras.push(statusLetra.NaoExiste)
         }
       });
+      this.verificaPalavraChute.emit(this.verificacaoDasLetras);
+      if(this.verificaSeGanhou()) {
+        const mensagem: Mensagem = {
+          tipo: tipoMensagem.Sucesso,
+          textoMensagem: "Parabéns você ganhou!"
+        }
+        this.emiteMensagem.emit(mensagem);
+        return
+      }
+      console.log(this.chute.tentativaAtual);
+      console.log(this.numeroDeTentativas)
+      if(this.verificaSePerdeu()) {
+        const mensagem: Mensagem = {
+          tipo: tipoMensagem.Erro,
+          textoMensagem: "Você perdeu, tente outra palavra!"
+        }
+        this.emiteMensagem.emit(mensagem);
+        return
+      }
+      this.chute.tentativaAtual ++;
+      this.chute.campoAtual = 1;
+      while(this.palavraChute.length) {
+        this.palavraChute.pop();
+      }
+      while(this.verificacaoDasLetras.length) {
+        this.verificacaoDasLetras.pop();
+      }
+    } else {
+      const mensagem: Mensagem = {
+        tipo: tipoMensagem.Erro,
+        textoMensagem: "Preencha todas as letras"
+      }
+      this.emiteMensagem.emit(mensagem);
     }
-    this.verificaPalavraChute.emit(this.verificacaoDasLetras);
-    this.chute.tentativaAtual ++;
-    this.chute.campoAtual = 1;
-    while(this.palavraChute.length) {
-      this.palavraChute.pop();
+  }
+  verificaSeGanhou(): boolean {
+    if(this.verificacaoDasLetras.indexOf(statusLetra.NaoExiste) == -1 && this.verificacaoDasLetras.indexOf(statusLetra.PosicaoErrada) == -1) {
+      return true
     }
-    while(this.verificacaoDasLetras.length) {
-      this.verificacaoDasLetras.pop();
+    return false
+  }
+
+  verificaSePerdeu(): boolean {
+    if(this.verificacaoDasLetras.indexOf(statusLetra.NaoExiste) == -1 || this.verificacaoDasLetras.indexOf(statusLetra.PosicaoErrada) == -1) {
+      if(this.chute.tentativaAtual === this.numeroDeTentativas) {
+        return true
+      }
+      return false
     }
+    return false
   }
 }

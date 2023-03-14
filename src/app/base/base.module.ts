@@ -4,7 +4,7 @@ import { BoardComponent } from "./board/board.component";
 import { TecladoComponent } from "./teclado/teclado.component";
 import { BaseComponent } from "./base.component";
 import { BaseService } from "./base.service";
-import { AvisoComponent } from './aviso/aviso.component';
+import { MensagemComponent } from './mensagem/mensagem.component';
 
 @NgModule ({
   imports: [
@@ -14,7 +14,7 @@ import { AvisoComponent } from './aviso/aviso.component';
     BaseComponent,
     BoardComponent,
     TecladoComponent,
-    AvisoComponent
+    MensagemComponent
   ],
   providers: [BaseService]
 })

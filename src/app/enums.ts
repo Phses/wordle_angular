@@ -3,3 +3,9 @@ export enum statusLetra {
   PosicaoErrada,
   NaoExiste
 }
+
+export enum tipoMensagem {
+  Erro = "Erro",
+  Sucesso = "Sucesso",
+  Aviso = "Aviso"
+}
